@@ -4,10 +4,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JTextPane;
-
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+
 
 import model.Article;
 import model.FirebaseFunction;
@@ -75,8 +75,8 @@ public class CaisseEnregistreuse extends JPanel {
 		scrollPane.setBounds(33, 75, 160, 156);
 		add(scrollPane);
 		
-		FirebaseFunction firebaseFunction = new FirebaseFunction();
-		firebaseFunction.getfactureRef().addChildEventListener(new ChildEventListener() {
+		
+		MainFram.firebaseFunction.getfactureRef().addChildEventListener(new ChildEventListener() {
 			
 			@Override
 			public void onChildRemoved(DataSnapshot arg0) {
@@ -116,6 +116,8 @@ public class CaisseEnregistreuse extends JPanel {
 				
 			}
 		});
+		
+
 		
 		ajouter.addActionListener(new ActionListener() {
 			

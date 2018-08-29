@@ -1,6 +1,7 @@
 package window;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.io.IOException;
 
@@ -9,10 +10,12 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
+import model.FirebaseFunction;
+
 public class MainFram extends JFrame {
 	
 	private JPanel contentPane;
-
+	public static FirebaseFunction firebaseFunction;
 	/**
 	 * Launch the application.
 	 */
@@ -36,6 +39,7 @@ public class MainFram extends JFrame {
 	public MainFram() throws IOException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 650, 500);
+		firebaseFunction = new FirebaseFunction();
 		
 		JPanel mainPanel = new JPanel();
 		
@@ -46,9 +50,8 @@ public class MainFram extends JFrame {
 		contentPane = new CaisseEnregistreuse();
 		getRootPane().setDefaultButton(((CaisseEnregistreuse) contentPane).getAjoutButton());
 		tabPane.addTab( "Caisse enregistreuse", contentPane);
-		tabPane.addTab( "compte Enseigne", new JPanel());
-		tabPane.addTab( "back office", new JPanel());
-		
+		tabPane.addTab( "Compte Enseigne", new CompteEnseigne());
+		tabPane.addTab( "Back office", new JPanel());
 		mainPanel.add(tabPane);
 		
 		

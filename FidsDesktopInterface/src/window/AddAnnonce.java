@@ -1,6 +1,7 @@
 package window;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -26,7 +27,9 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 
 public class AddAnnonce extends JFrame {
 	private JLabel lblNewLabel;
@@ -36,7 +39,7 @@ public class AddAnnonce extends JFrame {
 	private JTextField titre;
 	private JTextField prix;
 	private JTextField adresse;
-	private JTextField description;
+	private JTextArea description;
 	private JTextField categorie;
 	private JTextField duree;
 	private JTextField quantity;
@@ -44,7 +47,8 @@ public class AddAnnonce extends JFrame {
 	private JRadioButton miseEnRelation, location, achatVente;
 	private String name;
 	private ButtonGroup group;
-	private FirebaseFunction firebaseFunction;
+	//private FirebaseFunction firebaseFunction;
+	private JTextPane champPlus;
 
 	/**
 	 * Launch the application.
@@ -67,23 +71,25 @@ public class AddAnnonce extends JFrame {
 	 * @throws IOException 
 	 */
 	public AddAnnonce() throws IOException {
-		 firebaseFunction = new FirebaseFunction();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// firebaseFunction = new FirebaseFunction();
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 600);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.decode("#e6feeb"));
+		contentPane.setBackground(Color.decode("#EEEEEE"));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JButton btnAddImage = new JButton("Add image");
-		btnAddImage.setBounds(157, 89, 117, 25);
+		btnAddImage.setBounds(157, 95, 117, 25);
 		contentPane.add(btnAddImage);
 		
 		lblNewLabel = new JLabel();
-		lblNewLabel.setBounds(165, 30, 109, 84);
+		lblNewLabel.setBounds(157, 0, 117, 92);
 		contentPane.add(lblNewLabel);
 		
-		btnUpload = new JButton("Upload");
+		btnUpload = new JButton("Valider");
 		btnUpload.setBounds(157, 563, 117, 25);
 		contentPane.add(btnUpload);
 		
@@ -92,41 +98,77 @@ public class AddAnnonce extends JFrame {
 		titre.setToolTipText("");
 		titre.setBounds(160, 122, 114, 19);
 		contentPane.add(titre);
-		titre.setColumns(10);
+		
+		JTextPane titreP = new JTextPane();
+		titreP.setText("Titre");
+		titreP.setBounds(40, 122, 114, 19);
+		titreP.setBackground(Color.decode("#EEEEEE"));
+		contentPane.add(titreP);
+		
 		
 		prix = new JTextField();
 		prix.setBounds(160, 142, 114, 19);
 		contentPane.add(prix);
 		prix.setColumns(10);
 		
+		JTextPane prixP = new JTextPane();
+		prixP.setText("Prix");
+		prixP.setBounds(40, 142, 114, 19);
+		prixP.setBackground(Color.decode("#EEEEEE"));
+		contentPane.add(prixP);
+		
 		adresse = new JTextField();
-		adresse.setBounds(160, 164, 114, 19);
+		adresse.setBounds(160, 162, 114, 19);
 		contentPane.add(adresse);
 		adresse.setColumns(10);
 		
-		description = new JTextField();
+		JTextPane adresseP = new JTextPane();
+		adresseP.setText("Adresse");
+		adresseP.setBounds(40, 162, 114, 19);
+		contentPane.add(adresseP);
+		adresseP.setBackground(Color.decode("#EEEEEE"));
+		
+		description = new JTextArea();
 		description.setBounds(160, 208, 114, 82);
 		contentPane.add(description);
 		description.setColumns(10);
 		
-		 miseEnRelation = new JRadioButton("Mise en relation");
+		JTextPane descriptionP = new JTextPane();
+		descriptionP.setText("Description");
+		descriptionP.setBounds(40, 230, 114, 19);
+		descriptionP.setBackground(Color.decode("#EEEEEE"));
+		contentPane.add(descriptionP);
+		
+		
+		miseEnRelation = new JRadioButton("Mise en relation");
 		miseEnRelation.setBounds(157, 338, 149, 23);
+		miseEnRelation.setBackground(Color.decode("#EEEEEE"));
 		contentPane.add(miseEnRelation);
 		
-		 achatVente = new JRadioButton("Vente");
+		achatVente = new JRadioButton("Vente");
 		achatVente.setBounds(157, 367, 149, 23);
+		achatVente.setBackground(Color.decode("#EEEEEE"));
 		contentPane.add(achatVente);
 		
-		 location = new JRadioButton("Location");
+		location = new JRadioButton("Location");
+		location.setBackground(Color.decode("#EEEEEE"));
 		location.setBounds(157, 308, 149, 23);
 		contentPane.add(location);
+		
+		JTextPane typeP = new JTextPane();
+		typeP.setText("Type");
+		typeP.setBounds(40, 330, 114, 19);
+		typeP.setBackground(Color.decode("#EEEEEE"));
+		contentPane.add(typeP);
+		
 		miseEnRelation.addChangeListener(new ChangeListener() {
 			
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				// TODO Auto-generated method stub
-				if(miseEnRelation.isSelected())
+				if(miseEnRelation.isSelected()) {
 					typeEmploi.setVisible(true);
+				champPlus.setText("Type emploi");}
 				else
 					typeEmploi.setVisible(false);
 			}
@@ -136,8 +178,10 @@ public class AddAnnonce extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				// TODO Auto-generated method stub
-				if(achatVente.isSelected())
+				if(achatVente.isSelected()) {
 					quantity.setVisible(true);
+					champPlus.setText("Quantité");
+					}
 				else quantity.setVisible(false);
 			}
 		});
@@ -146,8 +190,9 @@ public class AddAnnonce extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				// TODO Auto-generated method stub
-				if(location.isSelected())
+				if(location.isSelected()) {
 					duree.setVisible(true);
+					champPlus.setText("Durée");}
 				else
 					duree.setVisible(false);
 			}
@@ -159,14 +204,26 @@ public class AddAnnonce extends JFrame {
 	    group.add(achatVente);
 	    
 	    categorie = new JTextField();
-	    categorie.setBounds(160, 184, 114, 19);
+	    categorie.setBounds(160, 182, 114, 19);
 	    contentPane.add(categorie);
 	    categorie.setColumns(10);
+	    
+		JTextPane categorieP = new JTextPane();
+		categorieP.setText("Catégorie");
+		categorieP.setBounds(40, 182, 114, 19);
+		categorieP.setBackground(Color.decode("#EEEEEE"));
+		contentPane.add(categorieP);
 	    
 	    duree = new JTextField();
 	    duree.setColumns(10);
 	    duree.setBounds(157, 427, 114, 19);
 	    contentPane.add(duree);
+	    
+	    champPlus = new JTextPane();
+	    champPlus.setText("");
+	    champPlus.setBounds(40, 427, 114, 19);
+	    champPlus.setBackground(Color.decode("#EEEEEE"));
+		contentPane.add(champPlus);
 	    
 	    quantity = new JTextField();
 	    quantity.setBounds(157, 427, 114, 19);
@@ -191,7 +248,7 @@ public class AddAnnonce extends JFrame {
 					
 					if(allFieldValide()) {
 					addToFirebase();
-					firebaseFunction.uploadImage(path,name);}
+					MainFram.firebaseFunction.uploadImage(path,name);}
 					else
 						System.out.println("veuillez remplir tous les champs");
 				} catch (IOException e1) {
@@ -201,8 +258,7 @@ public class AddAnnonce extends JFrame {
 			}
 		});
 		
-		btnAddImage.addActionListener(new ActionListener() {
-			
+		btnAddImage.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -247,10 +303,10 @@ public class AddAnnonce extends JFrame {
 		else return false;
 	}
 	public void addToFirebase() {
-		DatabaseReference AnnonceRef = firebaseFunction.getAnnonceRef().child(System.currentTimeMillis() + "");
+		DatabaseReference AnnonceRef = MainFram.firebaseFunction.getAnnonceRef().child(System.currentTimeMillis() + "");
 		AnnonceRef.child("recu").setValueAsync("false");
         AnnonceRef.child("title").setValueAsync(titre.getText().toString());
-        AnnonceRef.child("id_user").setValueAsync(firebaseFunction.getIdCompany());
+        AnnonceRef.child("id_user").setValueAsync(MainFram.firebaseFunction.getIdCompany());
         AnnonceRef.child("wallet").setValueAsync("1ZWiPiAHsQ4ELb3mHW7Ce4GnwxiHSy4aqnZRLc");
         AnnonceRef.child("price").setValueAsync(prix.getText().toString());
         AnnonceRef.child("description").setValueAsync(description.getText().toString());
@@ -260,7 +316,8 @@ public class AddAnnonce extends JFrame {
         AnnonceRef.child("offre_demande").setValueAsync("Offre");
         AnnonceRef.child("categories").setValueAsync(categorie.getText().toString());
         AnnonceRef.child("imageUrl").setValueAsync("https://firebasestorage.googleapis.com/v0/b/fids-f85.appspot.com/o/image%2F" +name+  "?alt=media&token=76f65534-e1bb-4944-b229-25e873663f8d");
-       
+        //"https://firebasestorage.googleapis.com/v0/b/fids-f85.appspot.com/o/image%2F1535129939942?alt=media&token=c2153f5e-4609-4700-8b04-9dbaff9c0cfd"
+        //"https://firebasestorage.googleapis.com/v0/b/fids-f85.appspot.com/o/image%2Fgirl.png?alt=media&token=76f65534-e1bb-4944-b229-25e873663f8d"
         if(location.isSelected()) {
             AnnonceRef.child("time").setValueAsync(duree.getText().toString());
         AnnonceRef.child("type").setValueAsync("Location");}
