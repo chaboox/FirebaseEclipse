@@ -67,6 +67,14 @@ public class FirebaseFunction {
 		return databaseReference.child("company").child(idCompany);
 	}
 	
+	public DatabaseReference getAllcompanyRef() {
+		return databaseReference.child("company");
+	}
+	
+	public DatabaseReference getServerRef() {
+		return databaseReference.child("Server");
+	}
+	
 	public void uploadImage(String path, String name) throws IOException {
 		BufferedImage bImage = ImageIO.read(new File(path));
 	      ByteArrayOutputStream bos = new ByteArrayOutputStream();

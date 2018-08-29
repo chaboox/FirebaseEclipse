@@ -38,6 +38,10 @@ public class CompteEnseigne extends JPanel {
 	private JTextField search;
 	private JTextPane dis;
 	private JTextPane col;
+	private JTextPane solde;
+	private double SumPlus = 0;
+	private double sumMinus = 0;
+	private double mySolde;
 	/**
 	 * Create the panel.
 	 */
@@ -47,32 +51,37 @@ public class CompteEnseigne extends JPanel {
 		listModel = new DefaultListModel();
 		listModelSave = new DefaultListModel();
 		list = new JList(listModel);
-		    list.setBounds(33, 75, 160, 156);
+		    list.setBounds(33, 95, 160, 156);
 		    scrollPane = new JScrollPane(list);
-			scrollPane.setBounds(33, 75, 160, 156);
+			scrollPane.setBounds(33, 95, 160, 156);
 			add(scrollPane);
-			populateUser();
+			
 		JButton btnNewButton = new JButton("Créer une annonce");
 		btnNewButton.setBounds(220, 400, 200, 25);
 		add(btnNewButton);
 		
 		search = new JTextField();
-		search.setBounds(33, 54, 160, 19);
+		search.setBounds(33, 74, 160, 19);
 		search.setText("Search");
 		search.setForeground(Color.GRAY);
 		add(search);
 		search.setColumns(10);
 		
 		dis = new JTextPane();
-		dis.setBounds(237, 54, 160, 19);
+		dis.setBounds(237, 74, 160, 19);
 		dis.setBackground(Color.decode("#EEEEEE"));
 		add(dis);
 		
 		
 		col = new JTextPane();
-		col.setBounds(237, 74, 160, 19);
+		col.setBounds(237, 94, 160, 19);
 		col.setBackground(Color.decode("#EEEEEE"));
 		add(col);
+		
+		solde = new JTextPane();
+		solde.setBounds(237, 114, 300, 19);
+		solde.setBackground(Color.decode("#EEEEEE"));
+		add(solde);
 		
 		
 		search.getDocument().addDocumentListener(new DocumentListener() {
@@ -156,6 +165,7 @@ public class CompteEnseigne extends JPanel {
 		        }
 		    }
 		});
+		populateUser();
 		populateFids();
 
 	}
@@ -187,13 +197,31 @@ public class CompteEnseigne extends JPanel {
 	}
 	
 	private void populateFids() {
-		MainFram.firebaseFunction.getCompanyRef().addListenerForSingleValueEvent(new ValueEventListener() {
+		MainFram.firebaseFunction.getAllcompanyRef().addListenerForSingleValueEvent(new ValueEventListener() {
 			
 			@Override
-			public void onDataChange(DataSnapshot dataSnapshot) {
+			public void onDataChange(DataSnapshot arg0) {
 				// TODO Auto-generated method stub
+				for(DataSnapshot dataSnapshot: arg0.getChildren()) {
+					if(MainFram.firebaseFunction.getIdCompany().equals(dataSnapshot.getKey().toString())) {
+						mySolde = Double.parseDouble(dataSnapshot.child("dis").getValue().toString()) 
+								- Double.parseDouble(dataSnapshot.child("col").getValue().toString());
+					//	System.out.println("MYSOLD " + mySolde);
 				dis.setText("Fids distribués : " +dataSnapshot.child("dis").getValue().toString() );
-				col.setText("Fids collectés : " + dataSnapshot.child("col").getValue().toString() );
+				col.setText("Fids collectés : " + dataSnapshot.child("col").getValue().toString() );}
+					if((Double.parseDouble(dataSnapshot.child("dis").getValue().toString()) 
+							- Double.parseDouble(dataSnapshot.child("col").getValue().toString()) )> 0)
+						SumPlus += Double.parseDouble(dataSnapshot.child("dis").getValue().toString()) 
+								- Double.parseDouble(dataSnapshot.child("col").getValue().toString());
+					else 
+						sumMinus += Double.parseDouble(dataSnapshot.child("dis").getValue().toString()) 
+						- Double.parseDouble(dataSnapshot.child("col").getValue().toString());
+				}
+		//	System.out.println("POS" + SumPlus + " NEGA " +sumMinus);
+			if(mySolde > 0)
+				solde.setText("À verser : " + ((int)(((mySolde*(-sumMinus))/SumPlus)*100))/100);
+			else solde.setText("À recevoir : " + -mySolde );
+				
 			}
 			
 			@Override

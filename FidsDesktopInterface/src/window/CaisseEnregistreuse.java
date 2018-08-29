@@ -14,6 +14,8 @@ import model.FirebaseFunction;
 
 import javax.swing.JTextField;
 
+import java.awt.Color;
+import java.awt.TexturePaint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -65,6 +67,20 @@ public class CaisseEnregistreuse extends JPanel {
 		textField_1.setBounds(180, 27, 114, 19);
 		add(textField_1);
 		textField_1.setColumns(10);
+		
+		JTextPane textFieldP = new JTextPane();
+		textFieldP.setBounds(33, 7, 143, 19);
+		textFieldP.setBackground(Color.decode("#EEEEEE"));
+		textFieldP.setText("Article");
+		add(textFieldP);
+		
+			
+		JTextPane textField_1P = new JTextPane();
+		textField_1P.setBounds(180, 7, 114, 19);
+		textField_1P.setText("Prix");
+		textField_1P.setBackground(Color.decode("#EEEEEE"));
+		add(textField_1P);
+		
 		
 		ajouter = new JButton("Ajouter");
 		ajouter.setBounds(303, 27, 117, 19);
