@@ -40,27 +40,17 @@ public class MainFram extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 650, 500);
 		firebaseFunction = new FirebaseFunction();
-		
 		JPanel mainPanel = new JPanel();
-		
 		mainPanel.setLayout(new BorderLayout());
 		getContentPane().add(mainPanel);
-	
 		JTabbedPane tabPane = new JTabbedPane();
 		contentPane = new CaisseEnregistreuse();
 		getRootPane().setDefaultButton(((CaisseEnregistreuse) contentPane).getAjoutButton());
 		tabPane.addTab( "Caisse enregistreuse", contentPane);
 		tabPane.addTab( "Compte Enseigne", new CompteEnseigne());
-		tabPane.addTab( "Back office", new JPanel());
+		tabPane.addTab( "Back office", new BackOffice());
 		mainPanel.add(tabPane);
 		
-		
-		/*
-		contentPane = new CaisseEnregistreuse();
-		getRootPane().setDefaultButton(((CaisseEnregistreuse) contentPane).getAjoutButton());
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);*/
 		
 	}
 

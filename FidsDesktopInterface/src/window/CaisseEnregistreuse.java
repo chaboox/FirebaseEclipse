@@ -18,10 +18,13 @@ import java.awt.Color;
 import java.awt.TexturePaint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 
 public class CaisseEnregistreuse extends JPanel {
 	private JTextField textField;
@@ -69,6 +72,7 @@ public class CaisseEnregistreuse extends JPanel {
 		textField_1.setColumns(10);
 		
 		JTextPane textFieldP = new JTextPane();
+		textFieldP.setEditable(false);
 		textFieldP.setBounds(33, 7, 143, 19);
 		textFieldP.setBackground(Color.decode("#EEEEEE"));
 		textFieldP.setText("Article");
@@ -76,6 +80,7 @@ public class CaisseEnregistreuse extends JPanel {
 		
 			
 		JTextPane textField_1P = new JTextPane();
+		textField_1P.setEditable(false);
 		textField_1P.setBounds(180, 7, 114, 19);
 		textField_1P.setText("Prix");
 		textField_1P.setBackground(Color.decode("#EEEEEE"));
@@ -91,6 +96,20 @@ public class CaisseEnregistreuse extends JPanel {
 		scrollPane.setBounds(33, 75, 160, 156);
 		add(scrollPane);
 		
+		list.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		        JList list = (JList)evt.getSource();
+		        if (evt.getClickCount() == 1) {
+		        		System.out.println("C2");
+		            // Double-click detected
+		            int index = list.locationToIndex(evt.getPoint());
+		            listModel.remove(index);
+		            textPane.setText(" À payer : " + sumPrice(listModel) + " €");
+					textPane3.setText("Reste à payer : " + (sumPrice(listModel)- totalFids*2) + " €");
+		            
+		        } 
+		    }
+		});
 		
 		MainFram.firebaseFunction.getfactureRef().addChildEventListener(new ChildEventListener() {
 			
@@ -117,8 +136,7 @@ public class CaisseEnregistreuse extends JPanel {
 				// TODO Auto-generated method stub
 				for(DataSnapshot child: arg0.getChildren()) {
 					totalFids += Double.parseDouble(child.getValue().toString());
-					textPane2.setText("Payé en Fids : " + totalFids);
-					
+					textPane2.setText("Payé en Fids : " + totalFids);		
 					textPane3.setText("Reste à payer : " + (sumPrice(listModel) - totalFids*2) + " €");
 					arg0.getRef().removeValueAsync();
 					
@@ -141,14 +159,13 @@ public class CaisseEnregistreuse extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				if(!textField.getText().equals("") && !textField_1.getText().equals("")) {
-					
 					// add data
 					//listModel.addElement(textField.getText() + " " + textField_1.getText() + " €");
 					listModel.addElement(new Article(textField.getText(),Double.parseDouble(textField_1.getText())));
 					textField.setText("");
 					textField_1.setText("");
 					textPane.setText(" À payer : " + sumPrice(listModel) + " €");
-					textPane3.setText("Reste à payer : " + (sumPrice(listModel)- totalFids) + " €");
+					textPane3.setText("Reste à payer : " + (sumPrice(listModel)- totalFids*2) + " €");
 					textField.requestFocus();
 					
 					

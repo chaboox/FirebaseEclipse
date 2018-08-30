@@ -82,7 +82,7 @@ public class AddAnnonce extends JFrame {
 		contentPane.setLayout(null);
 		
 		JButton btnAddImage = new JButton("Add image");
-		btnAddImage.setBounds(157, 95, 117, 25);
+		btnAddImage.setBounds(160, 95, 113, 25);
 		contentPane.add(btnAddImage);
 		
 		lblNewLabel = new JLabel();

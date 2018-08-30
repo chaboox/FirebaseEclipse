@@ -7,6 +7,7 @@ import javax.swing.ListModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -22,6 +23,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -42,6 +44,7 @@ public class CompteEnseigne extends JPanel {
 	private double SumPlus = 0;
 	private double sumMinus = 0;
 	private double mySolde;
+	private  DecimalFormat df2 = new DecimalFormat(".##");
 	/**
 	 * Create the panel.
 	 */
@@ -68,17 +71,20 @@ public class CompteEnseigne extends JPanel {
 		search.setColumns(10);
 		
 		dis = new JTextPane();
+		dis.setEditable(false);
 		dis.setBounds(237, 74, 160, 19);
 		dis.setBackground(Color.decode("#EEEEEE"));
 		add(dis);
 		
 		
 		col = new JTextPane();
+		col.setEditable(false);
 		col.setBounds(237, 94, 160, 19);
 		col.setBackground(Color.decode("#EEEEEE"));
 		add(col);
 		
 		solde = new JTextPane();
+		solde.setEditable(false);
 		solde.setBounds(237, 114, 300, 19);
 		solde.setBackground(Color.decode("#EEEEEE"));
 		add(solde);
@@ -178,12 +184,54 @@ public class CompteEnseigne extends JPanel {
 				// TODO Auto-generated method stub
 				System.out.println("STEP2");
 				for(DataSnapshot dataSnapshot : arg0.getChildren()) {
-					//System.out.println("STEP3" + dataSnapshot.getKey() + dataSnapshot.getValue());
-					listModel.addElement(new Utilisateur(dataSnapshot));
-					
+					System.out.println("PATH " + dataSnapshot.getKey().toString() + " " );
+					MainFram.firebaseFunction.getCompanyUserRef().child(dataSnapshot.getKey().toString()).
+					child(MainFram.firebaseFunction.getIdCompany()).addChildEventListener(new ChildEventListener() {
+						
+						@Override
+						public void onChildRemoved(DataSnapshot arg0) {
+							// TODO Auto-generated method stub
+							System.out.println(dataSnapshot.getKey().toString());
+							for(int i = 0 ; i < listModel.getSize() ; i++)
+								if(listModel.getElementAt(i).getId().equals(dataSnapshot.getKey().toString())) {
+									listModel.removeElementAt(i);
+									i--;}
+							for(int i = 0 ; i < listModelSave.getSize() ; i++)
+								if(listModelSave.getElementAt(i).getId().equals(dataSnapshot.getKey().toString())) {
+									listModelSave.removeElementAt(i);
+									i--;}
+						}
+						
+						@Override
+						public void onChildMoved(DataSnapshot arg0, String arg1) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+						@Override
+						public void onChildChanged(DataSnapshot arg0, String arg1) {
+							// TODO Auto-generated method stub
+								
+						}
+						
+						@Override
+						public void onChildAdded(DataSnapshot arg0, String arg1) {
+							// TODO Auto-generated method stub
+							System.out.println("STEP3");
+							listModel.addElement(new Utilisateur(dataSnapshot));
+							listModelSave.addElement(new Utilisateur(dataSnapshot));
+						}
+						
+						@Override
+						public void onCancelled(DatabaseError arg0) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+				//	listModel.addElement(new Utilisateur(dataSnapshot));					
 					}
-				for(int i = 0 ; i < listModel.getSize() ; i++)
-					listModelSave.addElement(listModel.getElementAt(i));
+				//for(int i = 0 ; i < listModel.getSize() ; i++)
+					//listModelSave.addElement(listModel.getElementAt(i));
 			
 			}
 		
@@ -206,7 +254,6 @@ public class CompteEnseigne extends JPanel {
 					if(MainFram.firebaseFunction.getIdCompany().equals(dataSnapshot.getKey().toString())) {
 						mySolde = Double.parseDouble(dataSnapshot.child("dis").getValue().toString()) 
 								- Double.parseDouble(dataSnapshot.child("col").getValue().toString());
-					//	System.out.println("MYSOLD " + mySolde);
 				dis.setText("Fids distribués : " +dataSnapshot.child("dis").getValue().toString() );
 				col.setText("Fids collectés : " + dataSnapshot.child("col").getValue().toString() );}
 					if((Double.parseDouble(dataSnapshot.child("dis").getValue().toString()) 
@@ -217,9 +264,8 @@ public class CompteEnseigne extends JPanel {
 						sumMinus += Double.parseDouble(dataSnapshot.child("dis").getValue().toString()) 
 						- Double.parseDouble(dataSnapshot.child("col").getValue().toString());
 				}
-		//	System.out.println("POS" + SumPlus + " NEGA " +sumMinus);
 			if(mySolde > 0)
-				solde.setText("À verser : " + ((int)(((mySolde*(-sumMinus))/SumPlus)*100))/100);
+				solde.setText("À verser : " + (df2.format((mySolde*(-sumMinus))/SumPlus)));
 			else solde.setText("À recevoir : " + -mySolde );
 				
 			}
@@ -231,5 +277,4 @@ public class CompteEnseigne extends JPanel {
 			}
 		});
 	}
-		
 }
