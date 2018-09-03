@@ -68,5 +68,7 @@
 	<classpathentry kind="lib" path="/home/mcq-1/eclipse-workspace/FidsDesktopInterface/jarFirebase/threetenbp-1.3.3.jar"/>
 	<classpathentry kind="lib" path="/home/mcq-1/eclipse-workspace/FidsDesktopInterface/jar/slf4j-simple-1.6.1.jar"/>
 	<classpathentry kind="lib" path="/home/mcq-1/eclipse-workspace/FidsDesktopInterface/jar/android-2.1.2-sources.jar"/>
+	<classpathentry kind="lib" path="/home/mcq-1/eclipse-workspace/FidsDesktopInterface/jar/appframework-1.0.3.jar"/>
+	<classpathentry kind="lib" path="/home/mcq-1/eclipse-workspace/FidsDesktopInterface/jar/swingx-1.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

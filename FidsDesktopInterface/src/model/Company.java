@@ -1,5 +1,7 @@
 package model;
 
+import javax.swing.table.DefaultTableModel;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -32,7 +34,7 @@ public class Company {
 		dif = Double.parseDouble(dis) - Double.parseDouble(col);
 	}
 	
-	public void initiatNumberUser() {
+	public void initiatNumberUser(DefaultTableModel tableModel, int row, int column) {
 		MainFram.firebaseFunction.getCompanyUserRef().addListenerForSingleValueEvent(new ValueEventListener() {
 			
 			@Override
@@ -46,6 +48,7 @@ public class Company {
 							// TODO Auto-generated method stub
 							System.out.print("Key " + arg1 + " VALUE " + arg1.getValue().toString());
 							numberUser++;
+							tableModel.setValueAt(numberUser, row, column);
 							System.out.println("NUM " + name + "    " + numberUser );
 						}
 						
@@ -162,6 +165,9 @@ public class Company {
 		return  name + "  distribué : " + dis + ", utilisé : " + col + ", " + compensation;
 	}
 	
+	public String[] getRow() {
+		return new String[] {name, "0", dis, col, compensation };
+	}
 	
 	
 	 

@@ -2,6 +2,7 @@ package window;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.io.IOException;
 
@@ -38,7 +39,9 @@ public class MainFram extends JFrame {
 	 */
 	public MainFram() throws IOException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 650, 500);
+		setBounds(100, 100, 1000, 800);
+		//setPreferredSize(new Dimension(1000, 800));
+		setResizable(false);
 		firebaseFunction = new FirebaseFunction();
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());

@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Random;
+
+import com.fasterxml.jackson.core.sym.Name;
 import com.google.firebase.database.DataSnapshot;
 
 public class Utilisateur {
@@ -105,7 +108,7 @@ public class Utilisateur {
 	public String getTelephone() {
 		return telephone;
 	}
-
+ 
 	/**
 	 * @return the siret
 	 */
@@ -120,7 +123,10 @@ public class Utilisateur {
 		return balance;
 	}
 	
-    
+    public String[] getRow() {
+    	return new String[] { "",nom, prenom, username, email, telephone, MultichaineFunction.getBalanceByWallet(wallet) +"", (new Random().nextInt((1500 - 0) + 1) + 0) + "",
+    			(new Random().nextInt((1500 - 0) + 1) + 0) + "", "" };
+    }
     
  
 }

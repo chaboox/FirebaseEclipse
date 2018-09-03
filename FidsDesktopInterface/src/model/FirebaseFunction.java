@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseFunction {
 	private String idCompany = "1";
+	public String nameCompany = "Kiloutou";
 	private DatabaseReference databaseReference;
 	public FirebaseFunction() throws IOException {
 		FileInputStream serviceAccount = new FileInputStream("/home/mcq-1/eclipse-workspace/FidsDesktopInterface/service-account.json");
@@ -61,6 +62,10 @@ public class FirebaseFunction {
 	
 	public DatabaseReference getUsersRef() {
 		return databaseReference.child("user");
+	}
+	
+	public DatabaseReference getProduitRef() {
+		return databaseReference.child("produit");
 	}
 	
 	public DatabaseReference getCompanyRef() {
