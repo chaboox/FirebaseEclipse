@@ -60,6 +60,10 @@ public class FirebaseFunction {
 		return databaseReference.child("annonce").child(idCompany);
 	}
 	
+	public DatabaseReference getPromotionRef() {
+		return databaseReference.child("promotion").child(idCompany);
+	}
+	
 	public DatabaseReference getUsersRef() {
 		return databaseReference.child("user");
 	}

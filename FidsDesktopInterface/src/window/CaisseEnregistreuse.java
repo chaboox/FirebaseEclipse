@@ -344,4 +344,5 @@ public class CaisseEnregistreuse extends JPanel {
 	public JButton getAjoutButton() {
 		return ajouter;
 	}
+	
 }

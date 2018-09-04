@@ -94,6 +94,10 @@ public class CompteEnseigne extends JPanel {
 		btnNewButton.setBounds(400, 700, 200, 25);
 		add(btnNewButton);
 		
+		JButton promotion = new JButton("Créer une promotion");
+		promotion.setBounds(400, 732, 200, 25);
+		add(promotion);
+		
 	/*	 JXDatePicker picker = new JXDatePicker();
 		 picker.setBounds(0, 0, 100, 100  );
 	        picker.setDate(Calendar.getInstance().getTime());
@@ -344,6 +348,22 @@ table = new JTable(model);
 				}
 			}
 		});
+	promotion.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					JFrame addAnnonce = new AddPromotion();
+					addAnnonce.setVisible(true);
+				
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		
 		list.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent evt) {
 		        JList list = (JList)evt.getSource();
