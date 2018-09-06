@@ -39,7 +39,7 @@ public class MainFram extends JFrame {
 	 */
 	public MainFram() throws IOException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1000, 800);
+		setBounds(300, 20, 1000, 1000);
 		//setPreferredSize(new Dimension(1000, 800));
 		setResizable(false);
 		firebaseFunction = new FirebaseFunction();

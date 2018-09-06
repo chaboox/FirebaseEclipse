@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import model.Article;
+import model.Transaction;
 import model.Utilisateur;
 
 import java.awt.Color;
@@ -57,7 +58,7 @@ public class CompteEnseigne extends JPanel {
 	private DefaultListModel<Utilisateur> listModel;
 	private DefaultListModel<Utilisateur> listModelSave;
 	private JTextField search;
-	private JTextPane dis, disM, colM, total, totalv, user;
+	private JTextPane dis, disM, colM, total, totalv, user, transa;
 	private JTextPane col;
 	private JTextPane solde;
 	private double SumPlus = 0;
@@ -71,6 +72,8 @@ public class CompteEnseigne extends JPanel {
 	private  DecimalFormat df2 = new DecimalFormat(".##");
 	private JComboBox comboBox;
 	private JComboBox comboBox_1;
+	private Double totalDis, totalCol;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -89,13 +92,14 @@ public class CompteEnseigne extends JPanel {
 		    scrollPane = new JScrollPane(list);
 			scrollPane.setBounds(33, 95, 160, 156);
 			//add(scrollPane);
-			
+			totalDis =0.0;
+			totalCol = 0.0;
 		JButton btnNewButton = new JButton("Créer une annonce");
-		btnNewButton.setBounds(400, 700, 200, 25);
+		btnNewButton.setBounds(505, 930, 200, 25);
 		add(btnNewButton);
 		
 		JButton promotion = new JButton("Créer une promotion");
-		promotion.setBounds(400, 732, 200, 25);
+		promotion.setBounds(295, 930, 200, 25);
 		add(promotion);
 		
 	/*	 JXDatePicker picker = new JXDatePicker();
@@ -104,13 +108,12 @@ public class CompteEnseigne extends JPanel {
 	        picker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
 	        add(picker);*/
 	        
-		search = new JTextField();
+		search = new JTextField();	
 		search.setBounds(33, 74, 160, 19);
 		search.setText("Search");
 		search.setForeground(Color.GRAY);
 		//add(search);
 		search.setColumns(10);
-		
 		total = new JTextPane();
 		total.setEditable(false);
 		total.setBounds(175, 130, 130, 19);
@@ -129,11 +132,19 @@ public class CompteEnseigne extends JPanel {
 		
 		user = new JTextPane();
 		user.setEditable(false);
-		user.setBounds(400, 307, 160, 19);
+		user.setBounds(430, 320, 160, 19);
 		user.setFont(ft);
 		user.setText("Utilisateurs");
 		user.setBackground(Color.decode("#EEEEEE"));
 		add(user);
+		
+		transa = new JTextPane();
+		transa.setEditable(false);
+		transa.setBounds(430, 671, 160, 19);
+		transa.setFont(ft);
+		transa.setText("Transaction");
+		transa.setBackground(Color.decode("#EEEEEE"));
+		add(transa);
 		
 		dis = new JTextPane();
 		dis.setEditable(false);
@@ -238,10 +249,64 @@ table = new JTable(model);
 		  tcm.getColumn(8).setPreferredWidth(60);
 		  tcm.getColumn(9).setPreferredWidth(150);
 		
+		  
+		  //Table transaction
+		  
+		  String[] columnNamesT = {
+					 "Operation",
+					 "Montant",
+		                "Utilisateur",
+		                "Date",
+		                };
+		        Object[][] dataT =
+		        {
+		        };
+
+			 DefaultTableModel modelT = new DefaultTableModel(dataT, columnNamesT)
+		        {
+		            //  Returning the Class of each column will allow different
+		            //  renderers to be used based on Class
+		            public Class getColumnClass(int column)
+		            {
+		                return getValueAt(0, column).getClass();
+		            }
+		        };
+			
+			
+	tableT = new JTable(modelT);
+		/*	
+			table.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+						"Nom",
+		                "Prenom",
+		                "Identifiant",
+		                "Email",
+		                "Téléphone",
+		                "Balance",
+		                "Fids collectés",
+		                "Fids distribués",
+		                "Autre enseignes"
+		                	
+				}
+			));*/
+			  tableModelT = (DefaultTableModel) tableT.getModel();
+			  tableT.setRowHeight(30);
+			  tableT.setFont(f3);
+			  tableT.getTableHeader().setFont(f3);
+		  
+		  
+		  
+		  
 		
 		JScrollPane scrollPane_1 = new JScrollPane(table);
-		scrollPane_1.setBounds(43, 350, 900, 268);
+		scrollPane_1.setBounds(43, 350, 900, 280);
 		add(scrollPane_1);
+		
+		JScrollPane scrollPane_2 = new JScrollPane(tableT);
+		scrollPane_2.setBounds(43, 700, 900, 200);
+		add(scrollPane_2);
 		
 		JTextPane namecompany = new JTextPane();
 		namecompany.setText(MainFram.firebaseFunction.nameCompany);
@@ -254,7 +319,7 @@ table = new JTable(model);
 		
 		comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"}));
-		comboBox.setSelectedIndex(7);
+		comboBox.setSelectedIndex(8);
 		comboBox.setBounds(43, 180, 100, 25);
 		add(comboBox);
 		comboBox.addItemListener(new ItemListener() {
@@ -263,14 +328,11 @@ table = new JTable(model);
 			public void itemStateChanged(ItemEvent e) {
 				// TODO Auto-generated method stub
 				System.out.println("item" + e.getItem());
-				if(e.getItem().equals("Août")) {
-					disM.setText("Fids distribués : 360" );
-					colM.setText("Fids collectés : 120" );
+				if(e.getItem().equals("Septembre")) {
+					disM.setText("Fids distribués : " + totalDis );
+					colM.setText("Fids collectés : " + totalCol );
 				}
-				else if(e.getItem().equals("Juillet")) {
-					disM.setText("Fids distribués : 123" );
-					colM.setText("Fids collectés : 145" );
-				}
+				
 				else {
 					disM.setText("Fids distribués : 0" );
 					colM.setText("Fids collectés : 0" );
@@ -383,6 +445,7 @@ table = new JTable(model);
 		});
 		populateUser();
 		populateFids();
+		populateTransaction();
 
 	}
 	private void populateUser() {
@@ -411,17 +474,12 @@ table = new JTable(model);
 									listModelSave.removeElementAt(i);
 									i--;}
 						}
-						
 						@Override
 						public void onChildMoved(DataSnapshot arg0, String arg1) {
-							// TODO Auto-generated method stub
-							
 						}
 						
 						@Override
-						public void onChildChanged(DataSnapshot arg0, String arg1) {
-							// TODO Auto-generated method stub
-								
+						public void onChildChanged(DataSnapshot arg0, String arg1) {	
 						}
 						
 						@Override
@@ -447,14 +505,71 @@ table = new JTable(model);
 					}
 				//for(int i = 0 ; i < listModel.getSize() ; i++)
 					//listModelSave.addElement(listModel.getElementAt(i));
-			
 			}
-		
-			
 			@Override
 			public void onCancelled(DatabaseError arg0) {
 				// TODO Auto-generated method stub
 				
+			}
+		});
+	}
+	
+	public void populateTransaction() {
+		MainFram.firebaseFunction.getTransactionRef().addChildEventListener(new ChildEventListener() {
+			
+			@Override
+			public void onChildRemoved(DataSnapshot arg0) {
+				// TODO Auto-generated method stub
+				System.out.println("HNA 1");
+			}
+			
+			@Override
+			public void onChildMoved(DataSnapshot arg0, String arg1) {
+				// TODO Auto-generated method stub
+				System.out.println("HNA 2");
+			}
+			
+			@Override
+			public void onChildChanged(DataSnapshot arg0, String arg1) {
+				// TODO Populate list
+				Transaction transaction = new Transaction(arg0);
+				System.out.println("HNA 3");
+				tableModelT.addRow(transaction.getRow());
+				if(transaction.getTypeOperation().equals("Collecté"))
+					totalCol += Double.parseDouble(transaction.getMontant());
+				else 
+					totalDis += Double.parseDouble(transaction.getMontant());
+				dis.setText("Fids distribués : " + totalDis);
+				col.setText("Fids collectés : " + totalCol);
+					if(comboBox.getSelectedIndex() == 8) {
+				disM.setText("Fids distribués : " + totalDis);
+				colM.setText("Fids collectés : " + totalCol);}
+					refreshDiff();
+			}
+			
+			@Override
+			public void onChildAdded(DataSnapshot arg0, String arg1) {
+				// TODO Auto-generated method stub
+				System.out.println("HNA 4" +arg0.getValue().toString() );
+				
+				Transaction transaction = new Transaction(arg0);
+				tableModelT.addRow(transaction.getRow());
+				if(transaction.getTypeOperation().equals("Collecté"))
+					totalCol += Double.parseDouble(transaction.getMontant());
+				else 
+					totalDis += Double.parseDouble(transaction.getMontant());
+				dis.setText("Fids distribués : " + totalDis);
+				col.setText("Fids collectés : " + totalCol);
+				refreshDiff();
+				if(comboBox.getSelectedIndex() == 8) {
+					disM.setText("Fids distribués : " + totalDis);
+					colM.setText("Fids collectés : " + totalCol);}
+			}
+			
+			@Override
+			public void onCancelled(DatabaseError arg0) {
+				// TODO Auto-generated method stub
+				System.out.println("HNA 5");
 			}
 		});
 	}
@@ -469,8 +584,8 @@ table = new JTable(model);
 					if(MainFram.firebaseFunction.getIdCompany().equals(dataSnapshot.getKey().toString())) {
 						mySolde = Double.parseDouble(dataSnapshot.child("dis").getValue().toString()) 
 								- Double.parseDouble(dataSnapshot.child("col").getValue().toString());
-				dis.setText("Fids distribués : " +dataSnapshot.child("dis").getValue().toString() );
-				col.setText("Fids collectés : " + dataSnapshot.child("col").getValue().toString() );
+				dis.setText("Fids distribués : " +dataSnapshot.child("dis").getValue().toString());
+				col.setText("Fids collectés : " + dataSnapshot.child("col").getValue().toString());
 				disM.setText("Fids distribués : 360" );
 				colM.setText("Fids collectés : 120" );
 					}
@@ -487,6 +602,7 @@ table = new JTable(model);
 				solde.setText( (df2.format((mySolde*(-sumMinus))/SumPlus)) + " Fidz le 01/10/2018");}
 			else { solde.setText( -mySolde + " Fidz le 01/10/2018" );
 			totalv.setText("À recevoir : ");}
+			refreshDiff();
 			}
 			
 			@Override
@@ -496,6 +612,15 @@ table = new JTable(model);
 			}
 		});
 	}
+	private void refreshDiff() {
+		Double di = totalDis - totalCol;
+		if(di > 0) {
+			totalv.setText("À verser : ");
+			solde.setText( (df2.format((di*(-sumMinus))/SumPlus)) + " Fidz le 01/10/2018");}
+		else { solde.setText( -di + " Fidz le 01/10/2018" );
+		totalv.setText("À recevoir : ");}
+		}
+	
 	public void populateAutreEns(DefaultTableModel listModel, int row, int column, String idUser) {
 		MainFram.firebaseFunction.getCompanyUserRef().child(idUser).addListenerForSingleValueEvent(new ValueEventListener() {
 			

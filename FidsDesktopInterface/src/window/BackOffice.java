@@ -34,11 +34,13 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import model.Company;
+import model.Transaction;
 import model.Utilisateur;
 
 public class BackOffice extends JPanel {
@@ -53,9 +55,9 @@ public class BackOffice extends JPanel {
 	private int widthImage = 65;
 	private JTextField search;
 	private double SumPlus = 0;
-	private DefaultTableModel tableModel,tableModelC;
+	private DefaultTableModel tableModel,tableModelC, tableModelT;
 	private Double totalFids = 0.0;
-	private JTable table, tableC;
+	private JTable table, tableC, tableT;
 	private double sumMinus = 0;
 	private  DecimalFormat df2 = new DecimalFormat(".##");
 	/**
@@ -89,7 +91,7 @@ public class BackOffice extends JPanel {
 			
 			user = new JTextPane();
 			user.setEditable(false);
-			user.setBounds(400, 360, 160, 19);
+			user.setBounds(400, 660, 160, 19);
 			user.setFont(ft);
 			user.setText("Utilisateurs");
 			user.setBackground(Color.decode("#EEEEEE"));
@@ -168,7 +170,7 @@ public class BackOffice extends JPanel {
 			
 			
 			JScrollPane scrollPane_1 = new JScrollPane(table);
-			scrollPane_1.setBounds(43, 400, 900, 268);
+			scrollPane_1.setBounds(43, 700, 900, 268);
 			add(scrollPane_1);
 			
 			
@@ -194,6 +196,56 @@ public class BackOffice extends JPanel {
 			  scrollPane_c.setBounds(43, 150, 900, 145);
 			  add(scrollPane_c);
 			
+			  
+			  
+			  //Table transaction
+			  
+			  String[] columnNamesT = {"Enseigne",
+						 "Operation",
+						 "Montant",
+			                "Utilisateur",
+			                "Date",
+			                };
+			        Object[][] dataT =
+			        {
+			        };
+
+				 DefaultTableModel modelT = new DefaultTableModel(dataT, columnNamesT);
+			        
+				
+				
+		tableT = new JTable(modelT);
+			/*	
+				table.setModel(new DefaultTableModel(
+					new Object[][] {
+					},
+					new String[] {
+							"Nom",
+			                "Prenom",
+			                "Identifiant",
+			                "Email",
+			                "Téléphone",
+			                "Balance",
+			                "Fids collectés",
+			                "Fids distribués",
+			                "Autre enseignes"
+			                	
+					}
+				));*/
+				  tableModelT = (DefaultTableModel) tableT.getModel();
+				  tableT.setRowHeight(30);
+				  tableT.setFont(f3);
+				  tableT.getTableHeader().setFont(f3);
+			  
+			  
+			  
+			  
+			
+			
+			
+			JScrollPane scrollPane_2 = new JScrollPane(tableT);
+			scrollPane_2.setBounds(43, 400, 900, 200);
+			add(scrollPane_2);
 			
 			 search.getDocument().addDocumentListener(new DocumentListener() {
 				
@@ -264,17 +316,19 @@ public class BackOffice extends JPanel {
 
 			populateUser();
 			populateCompany();
+			populateTransaction();
 
 	}
 	private void populateUser() {
-		System.out.println("STEP1");
+		System.out.println("STEP11");
 		MainFram.firebaseFunction.getUsersRef().addListenerForSingleValueEvent(new ValueEventListener() {
 			
 			@Override
 			public void onDataChange(DataSnapshot arg0) {
 				// TODO Auto-generated method stub
-				System.out.println("STEP2");
+				System.out.println("STEP22");
 				for(DataSnapshot dataSnapshot : arg0.getChildren()) {
+					if(!dataSnapshot.getKey().toString().equals("1")) {
 					Utilisateur u = new Utilisateur(dataSnapshot);
 					listModel.addElement(u);
 					tableModel.addRow(u.getRow());
@@ -282,7 +336,7 @@ public class BackOffice extends JPanel {
 					populateImageUsers(tableModel,tableModel.getRowCount()-1, 0, u.getImageUrl());
 					
 					
-					
+					}
 					}
 				for(int i = 0 ; i < listModel.getSize() ; i++)
 					listModelSave.addElement(listModel.getElementAt(i));
@@ -454,5 +508,66 @@ public class BackOffice extends JPanel {
 	        	e.printStackTrace();
 	        }
 	 }
+	 public void populateTransaction() {
+			MainFram.firebaseFunction.getAllTransactionRef().addListenerForSingleValueEvent(new ValueEventListener() {
+				
+				@Override
+				public void onDataChange(DataSnapshot dataSnapshot) {
+					// TODO Auto-generated method stub
+					for(DataSnapshot arg2 : dataSnapshot.getChildren()) {
+						arg2.getRef().addChildEventListener(new ChildEventListener() {
+							
+							@Override
+							public void onChildRemoved(DataSnapshot arg0) {
+								// TODO Auto-generated method stub
+								System.out.println("HNA 1");
+							}
+							
+							@Override
+							public void onChildMoved(DataSnapshot arg0, String arg1) {
+								// TODO Auto-generated method stub
+								System.out.println("HNA 2");
+							}
+							
+							@Override
+							public void onChildChanged(DataSnapshot arg0, String arg1) {
+								// TODO Populate list
+								Transaction transaction = new Transaction(arg0, arg2.getKey().toString());
+								System.out.println("HNA 3");
+								tableModelT.addRow(transaction.getRowPlus());
+							 
+							}
+							
+							@Override
+							public void onChildAdded(DataSnapshot arg0, String arg1) {
+								// TODO Auto-generated method stub
+								System.out.println("HNA 4" +arg0.getValue().toString() );
+								
+								Transaction transaction = new Transaction(arg0, arg2.getKey().toString());
+								tableModelT.addRow(transaction.getRowPlus());
+							
+							}
+							
+							@Override
+							public void onCancelled(DatabaseError arg0) {
+								// TODO Auto-generated method stub
+								System.out.println("HNA 5");
+							}
+						});
+					}
+				}
+				
+				@Override
+				public void onCancelled(DatabaseError arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			
+			
+			
+			
+			
+		}
 	 
 }

@@ -200,7 +200,10 @@ public class CaisseEnregistreuse extends JPanel {
 		            listModel.remove(index);
 		            textPane.setText(" À payer : " + sumPrice(listModel) + " €");
 					textPane3.setText("Reste à payer : " + df2.format(sumPrice(listModel)- totalFidz*0.5) + " €");
+					
 					textPane4.setText("Fidz gagnés : " +( df2.format((sumPrice(listModel)- totalFidz*0.5)/10)));
+					if((sumPrice(listModel)- totalFidz*0.5) < 0 )
+						textPane4.setText("Fidz gagnés : 0.0"); 
 		            
 		        } 
 		    }
@@ -236,6 +239,8 @@ public class CaisseEnregistreuse extends JPanel {
 					textPane2.setText("Payé en Fidz : " + totalFidz);		
 					textPane3.setText("Reste à payer : " + df2.format(sumPrice(tableModel, 3 ) - totalFidz*0.5) + " €");
 					textPane4.setText("Fidz gagnés : " + (df2.format((sumPrice(tableModel, 3 ) - totalFidz*0.5)/10)));
+					if((sumPrice(tableModel, 3 ) - totalFidz*0.5) < 0 )
+						textPane4.setText("Fidz gagnés : 0.0"); 
 					arg0.getRef().removeValueAsync();}
 					else {System.out.println(child.getValue().toString());
 						MainFram.firebaseFunction.getProduitRef().child(child.getValue().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -267,6 +272,8 @@ public class CaisseEnregistreuse extends JPanel {
 							double sumPay = sumPrice(tableModel, 3 );
 							textPane3.setText("Reste à payer : " + df2.format(sumPay- totalFidz*0.5) + " €");
 							textPane4.setText("Fidz gagnés : " +( df2.format((sumPay- totalFidz*0.5)/10)));
+							if((sumPay- totalFidz*0.5) < 0 )
+								textPane4.setText("Fidz gagnés : 0.0"); 
 							tableModelT.setValueAt(sumPrice(tableModel, 2 ), 0, 2);
 							//tableModelT.setValueAt(", 0, 2);
 							tableModelT.setValueAt(sumPay, 0, 3);
@@ -315,6 +322,8 @@ public class CaisseEnregistreuse extends JPanel {
 					Double sumPay = sumPrice(tableModel, 3 );
 					textPane3.setText("Reste à payer : " +df2.format (sumPay- totalFidz*0.5) + " €");
 					textPane4.setText("Fidz gagnés : " +( df2.format((sumPay- totalFidz*0.5)/10)));
+					if((sumPay- totalFidz*0.5) < 0 )
+						textPane4.setText("Fidz gagnés : 0.0"); 
 					
 					tableModelT.setValueAt(sumPrice(tableModel, 2 ), 0, 2);
 					//tableModelT.setValueAt(", 0, 2);
