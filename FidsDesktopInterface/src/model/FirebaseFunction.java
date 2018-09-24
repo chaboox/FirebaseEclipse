@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseFunction {
+	//We did set the id to 1 (for Kiloutou) for demo purpose, you can make a switcher or change the id to see others companies data
+	
 	private String idCompany = "1";
 	public String nameCompany = "Kiloutou";
 	private DatabaseReference databaseReference;
@@ -95,6 +97,7 @@ public class FirebaseFunction {
 	public DatabaseReference getAllTransactionRef() {
 		return databaseReference.child("transaction");
 	}
+	
 	
 	public void uploadImage(String path, String name) throws IOException {
 		BufferedImage bImage = ImageIO.read(new File(path));

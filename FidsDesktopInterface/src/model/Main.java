@@ -19,6 +19,8 @@ import multichain.command.MultichainException;
 
 public class Main {
 
+	//just a test class, launch from the class window/MainFram
+	
 	public static void main(String[] args) throws IOException {
 		
 		

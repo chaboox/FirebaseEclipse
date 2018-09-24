@@ -4,7 +4,7 @@ import multichain.command.MultiChainCommand;
 import multichain.command.MultichainException;
 
 public class MultichaineFunction {
-	
+	//Used to get ballance of users by their wallets 
 	public static double getBalanceByWallet(String Wallet) {
 		Singleton_connexion singleton_connexion = new Singleton_connexion();
 	MultiChainCommand multiChainCommand = new MultiChainCommand(

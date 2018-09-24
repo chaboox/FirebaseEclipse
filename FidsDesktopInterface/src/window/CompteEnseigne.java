@@ -50,6 +50,7 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
 
 public class CompteEnseigne extends JPanel {
 	private JList list;
@@ -67,7 +68,7 @@ public class CompteEnseigne extends JPanel {
 	private double sumMinus = 0;
 	private double mySolde;
 	private DefaultTableModel tableModel,tableModelT;
-	private Double totalFids = 0.0;
+	private Double totalFidz = 0.0;
 	private JTable table, tableT;
 	private  DecimalFormat df2 = new DecimalFormat(".##");
 	private JComboBox comboBox;
@@ -142,7 +143,7 @@ public class CompteEnseigne extends JPanel {
 		transa.setEditable(false);
 		transa.setBounds(430, 671, 160, 19);
 		transa.setFont(ft);
-		transa.setText("Transaction");
+		transa.setText("Transactions");
 		transa.setBackground(Color.decode("#EEEEEE"));
 		add(transa);
 		
@@ -185,16 +186,16 @@ public class CompteEnseigne extends JPanel {
 		solde.setBackground(Color.decode("#EEEEEE"));
 		add(solde);
 		 String[] columnNames = {
-				 "image",
+				 "Photo",
 				 "Nom",
-	                "Prenom",
+	                "Prénom",
 	                "Identifiant",
 	                "Email",
 	                "Téléphone",
 	                "Balance",
-	                "Fids collectés",
-	                "Fids distribués",
-	                "Autre enseignes",
+	                "Fidz collectés",
+	                "Fidz distribués",
+	                "Autres enseignes",
 	                };
 	        Object[][] data =
 	        {
@@ -223,8 +224,8 @@ table = new JTable(model);
 	                "Email",
 	                "Téléphone",
 	                "Balance",
-	                "Fids collectés",
-	                "Fids distribués",
+	                "Fidz collectés",
+	                "Fidz distribués",
 	                "Autre enseignes"
 	                	
 			}
@@ -253,7 +254,7 @@ table = new JTable(model);
 		  //Table transaction
 		  
 		  String[] columnNamesT = {
-					 "Operation",
+					 "Opération",
 					 "Montant",
 		                "Utilisateur",
 		                "Date",
@@ -280,13 +281,13 @@ table = new JTable(model);
 				},
 				new String[] {
 						"Nom",
-		                "Prenom",
+		                "Prénom",
 		                "Identifiant",
 		                "Email",
 		                "Téléphone",
 		                "Balance",
-		                "Fids collectés",
-		                "Fids distribués",
+		                "Fidz collectés",
+		                "Fidz distribués",
 		                "Autre enseignes"
 		                	
 				}
@@ -309,18 +310,19 @@ table = new JTable(model);
 		add(scrollPane_2);
 		
 		JTextPane namecompany = new JTextPane();
+		namecompany.setEditable(false);
 		namecompany.setText(MainFram.firebaseFunction.nameCompany);
 		namecompany.setFont(ftitle);
 		
 		namecompany.setBackground(Color.decode("#EEEEEE"));
-		namecompany.setBounds(400, 12, 487, 33);
+		namecompany.setBounds(400, 25, 487, 33);
 		
 		add(namecompany);
 		
 		comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"}));
 		comboBox.setSelectedIndex(8);
-		comboBox.setBounds(43, 180, 100, 25);
+		comboBox.setBounds(43, 180, 110, 25);
 		add(comboBox);
 		comboBox.addItemListener(new ItemListener() {
 			
@@ -329,21 +331,28 @@ table = new JTable(model);
 				// TODO Auto-generated method stub
 				System.out.println("item" + e.getItem());
 				if(e.getItem().equals("Septembre")) {
-					disM.setText("Fids distribués : " + totalDis );
-					colM.setText("Fids collectés : " + totalCol );
+					disM.setText("Fidz distribués : " + totalDis );
+					colM.setText("Fidz collectés : " + totalCol );
 				}
 				
 				else {
-					disM.setText("Fids distribués : 0" );
-					colM.setText("Fids collectés : 0" );
+					disM.setText("Fidz distribués : 0" );
+					colM.setText("Fidz collectés : 0" );
 				}
 			}
 		});
 		
 		comboBox_1 = new JComboBox();
 		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"2018"}));
-		comboBox_1.setBounds(150, 180, 90, 25);
+		comboBox_1.setBounds(160, 180, 90, 25);
 		add(comboBox_1);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setBounds(250, 12, 90, 90);
+		add(lblNewLabel);
+		ImageIcon iconLogo = new ImageIcon("/home/mcq-1/eclipse-workspace/FidsDesktopInterface/logokiloutou.jpg");
+		// In init() method write this code
+		lblNewLabel.setIcon(ResizeImageLogo(iconLogo));
 		
 		
 		search.getDocument().addDocumentListener(new DocumentListener() {
@@ -444,7 +453,7 @@ table = new JTable(model);
 		    }
 		});
 		populateUser();
-		populateFids();
+		populateFidz();
 		populateTransaction();
 
 	}
@@ -539,11 +548,11 @@ table = new JTable(model);
 					totalCol += Double.parseDouble(transaction.getMontant());
 				else 
 					totalDis += Double.parseDouble(transaction.getMontant());
-				dis.setText("Fids distribués : " + totalDis);
-				col.setText("Fids collectés : " + totalCol);
+				dis.setText("Fidz distribués : " + totalDis);
+				col.setText("Fidz collectés : " + totalCol);
 					if(comboBox.getSelectedIndex() == 8) {
-				disM.setText("Fids distribués : " + totalDis);
-				colM.setText("Fids collectés : " + totalCol);}
+				disM.setText("Fidz distribués : " + totalDis);
+				colM.setText("Fidz collectés : " + totalCol);}
 					refreshDiff();
 			}
 			
@@ -558,12 +567,12 @@ table = new JTable(model);
 					totalCol += Double.parseDouble(transaction.getMontant());
 				else 
 					totalDis += Double.parseDouble(transaction.getMontant());
-				dis.setText("Fids distribués : " + totalDis);
-				col.setText("Fids collectés : " + totalCol);
+				dis.setText("Fidz distribués : " + totalDis);
+				col.setText("Fidz collectés : " + totalCol);
 				refreshDiff();
 				if(comboBox.getSelectedIndex() == 8) {
-					disM.setText("Fids distribués : " + totalDis);
-					colM.setText("Fids collectés : " + totalCol);}
+					disM.setText("Fidz distribués : " + totalDis);
+					colM.setText("Fidz collectés : " + totalCol);}
 			}
 			
 			@Override
@@ -574,7 +583,7 @@ table = new JTable(model);
 		});
 	}
 	
-	private void populateFids() {
+	private void populateFidz() {
 		MainFram.firebaseFunction.getAllcompanyRef().addListenerForSingleValueEvent(new ValueEventListener() {
 			
 			@Override
@@ -584,10 +593,10 @@ table = new JTable(model);
 					if(MainFram.firebaseFunction.getIdCompany().equals(dataSnapshot.getKey().toString())) {
 						mySolde = Double.parseDouble(dataSnapshot.child("dis").getValue().toString()) 
 								- Double.parseDouble(dataSnapshot.child("col").getValue().toString());
-				dis.setText("Fids distribués : " +dataSnapshot.child("dis").getValue().toString());
-				col.setText("Fids collectés : " + dataSnapshot.child("col").getValue().toString());
-				disM.setText("Fids distribués : 360" );
-				colM.setText("Fids collectés : 120" );
+				dis.setText("Fidz distribués : " +dataSnapshot.child("dis").getValue().toString());
+				col.setText("Fidz collectés : " + dataSnapshot.child("col").getValue().toString());
+				disM.setText("Fidz distribués : 360" );
+				colM.setText("Fidz collectés : 120" );
 					}
 					if((Double.parseDouble(dataSnapshot.child("dis").getValue().toString()) 
 							- Double.parseDouble(dataSnapshot.child("col").getValue().toString()) )> 0)
@@ -635,13 +644,13 @@ table = new JTable(model);
 							if(idC.equals("1"))
 							autre = autre + "Kiloutou - ";
 							else if (idC.equals("2")) {
-								autre = autre + "Leroy Merlin -";
+								autre = autre + "Leroy Merlin - ";
 							}
 							else if (idC.equals("3")) {
-								autre = autre + "Manpower -";
+								autre = autre + "Manpower - ";
 							}
 							else if (idC.equals("4")) {
-								autre = autre + "Point.P -";
+								autre = autre + "Point.P - ";
 							}
 						
 						
@@ -697,6 +706,34 @@ table = new JTable(model);
 	        newImg = img.getScaledInstance(widthImage,(int)((double)heightImage * (h/w)) , Image.SCALE_SMOOTH);
 	        else 
 	        	newImg = img.getScaledInstance((int)((double)widthImage * (w/h)) ,heightImage , Image.SCALE_SMOOTH);
+	        ImageIcon image = new ImageIcon(newImg);
+	        return image;
+	    }
+	 public ImageIcon ResizeImageLogo(ImageIcon MyImage)
+	    {
+	       // ImageIcon MyImage = new ImageIcon(ImagePath);
+	        Image img = MyImage.getImage();
+	        double w = img.getWidth(new ImageObserver() {
+				
+				@Override
+				public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+					// TODO Auto-generated method stub
+					return false;
+				}
+			});
+	        double h = img.getHeight(new ImageObserver() {
+				
+				@Override
+				public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+					// TODO Auto-generated method stub
+					return false;
+				}
+			});
+	        Image newImg;
+	        if(w > h ) 
+	        newImg = img.getScaledInstance(90,(int)((double)90 * (h/w)) , Image.SCALE_SMOOTH);
+	        else 
+	        	newImg = img.getScaledInstance((int)((double)90 * (w/h)) ,90 , Image.SCALE_SMOOTH);
 	        ImageIcon image = new ImageIcon(newImg);
 	        return image;
 	    }

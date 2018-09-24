@@ -47,7 +47,7 @@ public class BackOffice extends JPanel {
 	private JList list;
 	private  Map<String, ImageIcon> imageMap;
 	private JScrollPane scrollPane;
-	private JTextPane textPane, textPane2, textPane3, user, ens;
+	private JTextPane textPane, textPane2, textPane3, user, transa, ens;
 	private DefaultListModel<Utilisateur> listModel;
 	private DefaultListModel<Utilisateur> listModelSave;
 	private DefaultListModel<model.Company> companies;
@@ -87,6 +87,34 @@ public class BackOffice extends JPanel {
 			search.setForeground(Color.GRAY);
 			//add(search);
 			search.setColumns(10);
+			JLabel lblNewLabel = new JLabel("");
+			lblNewLabel.setBounds(250, 12, 90, 90);
+			add(lblNewLabel);
+			ImageIcon iconLogo = new ImageIcon("/home/mcq-1/eclipse-workspace/FidsDesktopInterface/logokiloutou.jpg");
+			// In init() method write this code
+			lblNewLabel.setIcon(ResizeImageLogo(iconLogo));
+			
+			JLabel lblNewLabel2 = new JLabel("");
+			lblNewLabel2.setBounds(370, 12, 90, 90);
+			add(lblNewLabel2);
+			ImageIcon iconLogo2 = new ImageIcon("/home/mcq-1/eclipse-workspace/FidsDesktopInterface/lo.png");
+			// In init() method write this code
+			lblNewLabel2.setIcon(ResizeImageLogo(iconLogo2));
+			
+			
+			JLabel lblNewLabel3 = new JLabel("");
+			lblNewLabel3.setBounds(490, 12, 90, 90);
+			add(lblNewLabel3);
+			ImageIcon iconLogo3 = new ImageIcon("/home/mcq-1/eclipse-workspace/FidsDesktopInterface/man.png");
+			// In init() method write this code
+			lblNewLabel3.setIcon(ResizeImageLogo(iconLogo3));
+			
+			JLabel lblNewLabel4 = new JLabel("");
+			lblNewLabel4.setBounds(610, 12, 90, 90);
+			add(lblNewLabel4);
+			ImageIcon iconLogo4 = new ImageIcon("/home/mcq-1/eclipse-workspace/FidsDesktopInterface/p.jpeg");
+			// In init() method write this code
+			lblNewLabel4.setIcon(ResizeImageLogo(iconLogo4));
 			
 			
 			user = new JTextPane();
@@ -97,25 +125,32 @@ public class BackOffice extends JPanel {
 			user.setBackground(Color.decode("#EEEEEE"));
 			add(user);
 			
+			transa = new JTextPane();
+			transa.setEditable(false);
+			transa.setBounds(430, 371, 160, 19);
+			transa.setFont(ft);
+			transa.setText("Transactions");
+			transa.setBackground(Color.decode("#EEEEEE"));
+			add(transa);
 			ens = new JTextPane();
 			ens.setEditable(false);
-			ens.setBounds(400, 110, 160, 39);
+			ens.setBounds(420, 110, 160, 39);
 			ens.setFont(ft);
 			ens.setText("Enseignes");
 			ens.setBackground(Color.decode("#EEEEEE"));
 			add(ens);
 			
 			 String[] columnNames = {
-					 "image",
+					 "Photo",
 					 "Nom",
-		                "Prenom",
+		                "Prénom",
 		                "Identifiant",
 		                "Email",
 		                "Téléphone",
 		                "Balance",
-		                "Fids collectés",
-		                "Fids distribués",
-		                "Autre enseignes",
+		                "Fidz collectés",
+		                "Fidz distribués",
+		                "Autres enseignes",
 		                };
 		        Object[][] data =
 		        {
@@ -132,23 +167,7 @@ public class BackOffice extends JPanel {
 		        };
 			table = new JTable(model);
 			
-			/*table.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-						"Nom",
-		                "Prenom",
-		                "Identifiant",
-		                "Email",
-		                "Téléphone",
-		                "Balance",
-		                "Fids collectés",
-		                "Fids distribués",
-		                "Autre enseignes",
-		                "image"
-		                	
-				}
-			));*/
+			
 			  tableModel = (DefaultTableModel) table.getModel();
 			  table.setRowHeight(65);
 			  table.setFont(f3s);
@@ -181,10 +200,10 @@ public class BackOffice extends JPanel {
 				},
 				new String[] {
 						"Nom",
-		                "Nombre utilisateur",
+		                "Nombre utilisateurs",
 		                "Distribué",
-		                "Utilisé",
-		                "Difference" 	
+		                "Collecté",
+		                "Différence" 	
 				}
 			));
 			  tableModelC = (DefaultTableModel) tableC.getModel();
@@ -201,7 +220,7 @@ public class BackOffice extends JPanel {
 			  //Table transaction
 			  
 			  String[] columnNamesT = {"Enseigne",
-						 "Operation",
+						 "Opération",
 						 "Montant",
 			                "Utilisateur",
 			                "Date",
@@ -215,23 +234,7 @@ public class BackOffice extends JPanel {
 				
 				
 		tableT = new JTable(modelT);
-			/*	
-				table.setModel(new DefaultTableModel(
-					new Object[][] {
-					},
-					new String[] {
-							"Nom",
-			                "Prenom",
-			                "Identifiant",
-			                "Email",
-			                "Téléphone",
-			                "Balance",
-			                "Fids collectés",
-			                "Fids distribués",
-			                "Autre enseignes"
-			                	
-					}
-				));*/
+			
 				  tableModelT = (DefaultTableModel) tableT.getModel();
 				  tableT.setRowHeight(30);
 				  tableT.setFont(f3);
@@ -569,5 +572,33 @@ public class BackOffice extends JPanel {
 			
 			
 		}
+	 public ImageIcon ResizeImageLogo(ImageIcon MyImage)
+	    {
+	       // ImageIcon MyImage = new ImageIcon(ImagePath);
+	        Image img = MyImage.getImage();
+	        double w = img.getWidth(new ImageObserver() {
+				
+				@Override
+				public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+					// TODO Auto-generated method stub
+					return false;
+				}
+			});
+	        double h = img.getHeight(new ImageObserver() {
+				
+				@Override
+				public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+					// TODO Auto-generated method stub
+					return false;
+				}
+			});
+	        Image newImg;
+	        if(w > h ) 
+	        newImg = img.getScaledInstance(90,(int)((double)90 * (h/w)) , Image.SCALE_SMOOTH);
+	        else 
+	        	newImg = img.getScaledInstance((int)((double)90 * (w/h)) ,90 , Image.SCALE_SMOOTH);
+	        ImageIcon image = new ImageIcon(newImg);
+	        return image;
+	    }
 	 
 }

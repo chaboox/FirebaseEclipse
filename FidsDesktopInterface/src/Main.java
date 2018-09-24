@@ -28,6 +28,7 @@ public class Main {
 		
 		
 
+		//just a test class, launch from the class window/MainFram
 		
 		// TODO Auto-generated method stub
 		Singleton_connexion singleton_connexion = new Singleton_connexion();

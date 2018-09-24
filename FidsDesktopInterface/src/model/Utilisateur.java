@@ -33,6 +33,7 @@ public class Utilisateur {
 	public Utilisateur() {
 		
 	}
+	
 	public Utilisateur(DataSnapshot dataSnapshot) {
 		id = dataSnapshot.getKey().toString();
 		wallet = dataSnapshot.child("wallet").getValue().toString();
@@ -122,6 +123,7 @@ public class Utilisateur {
 	public double getBalance() {
 		return balance;
 	}
+	
 	
     public String[] getRow() {
     	return new String[] { "",nom, prenom, username, email, telephone, MultichaineFunction.getBalanceByWallet(wallet) +"", (new Random().nextInt((1500 - 0) + 1) + 0) + "",

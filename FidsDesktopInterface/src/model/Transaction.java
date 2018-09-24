@@ -30,7 +30,7 @@ public class Transaction {
     	typeOperation = dataSnapshot.child("operation").getValue().toString();
     	montant = dataSnapshot.child("somme").getValue().toString();
     	date = dataSnapshot.getKey().toString();
-    	System.out.println("ENS " + ens) ;
+    
     	if(ens.equals("1")) {
     		enseigne = "Kiloutou";
     	}
